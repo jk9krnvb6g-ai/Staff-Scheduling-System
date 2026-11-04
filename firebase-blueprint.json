@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role, status, workGroup, and department",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["superadmin", "admin", "user"] },
+        "status": { "type": "string", "enum": ["pending", "active", "rejected"] },
+        "workGroup": { "type": "string" },
+        "department": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["email", "displayName", "role", "status", "workGroup", "department", "createdAt", "updatedAt"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Calendar event tied to a workGroup and department",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "location": { "type": "string" },
+        "type": { "type": "string", "enum": ["urgent", "medium", "normal", "info"] },
+        "ownerId": { "type": "string" },
+        "workGroup": { "type": "string" },
+        "department": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "date", "time", "location", "type", "ownerId", "workGroup", "department", "createdAt", "updatedAt"]
+    },
+    "Presence": {
+      "title": "Presence",
+      "description": "Real-time presence state for online tracking",
+      "type": "object",
+      "properties": {
+        "isOnline": { "type": "boolean" },
+        "lastSeen": { "type": "string" },
+        "displayName": { "type": "string" },
+        "workGroup": { "type": "string" },
+        "department": { "type": "string" }
+      },
+      "required": ["isOnline", "lastSeen", "displayName", "workGroup", "department"]
+    },
+    "Holiday": {
+      "title": "Holiday",
+      "description": "Thai public holidays",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["date", "name"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "User" },
+      "description": "Stores user profiles including their role, status, and grouping"
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "Event" },
+      "description": "Stores calendar events scoped to workGroup and department"
+    },
+    "/presence/{userId}": {
+      "schema": { "$ref": "Presence" },
+      "description": "Tracks online presence of users"
+    },
+    "/holidays/{holidayId}": {
+      "schema": { "$ref": "Holiday" },
+      "description": "Stores Thai public holidays, manageable only by admins"
+    }
+  }
+}
